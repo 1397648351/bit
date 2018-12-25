@@ -1,0 +1,318 @@
+<style>
+    #myp {
+        padding-top: 15px;
+        height: 248px;
+    }
+    .layui-layer-btn {
+        background-color: #F8F8F8;
+        border-top: 1px solid #eee;
+    }
+</style>
+<div class="layui-row">
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                用户管理
+            </div>
+            <div class="layui-card-body">
+                <table id="demo" lay-filter="test"></table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- other js -->
+<script type="text/javascript">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'jquery', 'table', 'form'], function () {
+        var element = layui.element;
+        var table = layui.table;
+        var form = layui.form;
+        var $ = layui.jquery;
+        //第一个实例
+        table.render({
+            elem: '#demo',
+            //height: 312,
+            method: 'post',
+            url: '{:url("/Admin/getuser")}', //数据接口
+            page: {
+                limit: 10,
+                layout: ['prev', 'page', 'next', 'count']
+            },//开启分页
+            toolbar: 'default', //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            defaultToolbar: [],
+            cols: [[ //表头
+                {type: 'radio'},
+                {field: 'id', title: 'ID', unresize: true},
+                {field: 'name', title: '帐号', unresize: true},
+                {field: 'realname', title: '姓名', width: 120, sort: true, unresize: true},
+                {
+                    field: 'sex', title: '性别', width: 75, sort: true, unresize: true,
+                    templet: function (d) {
+                        if (d.sex == 0)
+                            return '女';
+                        else
+                            return '男';
+                    }
+                },
+                {field: 'phone', title: '电话', unresize: true},
+                {field: 'role_name', title: '角色', unresize: true}
+            ]]
+        });
+
+
+        //监听头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id), data = checkStatus.data; //获取选中的数据
+            switch (obj.event) {
+                case 'add':
+                    var index = layer.open({
+                        type: 1,
+                        title: '添加数据',
+                        id: 'myp',
+                        btn: ['确认', '关闭'],
+                        area: ['660px'], //宽高
+                        content: '<form class="layui-form">' +
+                        '  <div class="layui-form-item">' +
+                        '    <label class="layui-form-label">ID：</label>' +
+                        '    <div class="layui-input-block" style="width: 78%;">' +
+                        '      <input type="text" id="id" disabled name="id" lay-verify="title" autocomplete="off" placeholder="自动生成" class="layui-input">' +
+                        '    </div>' +
+                        '  </div>' +
+                        '  <div class="layui-form-item">' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">用户账号：</label>' +
+                        '      <div class="layui-input-inline">' +
+                        '        <input type="tel" id="name" name="name" lay-verify="required|phone" autocomplete="off" class="layui-input">' +
+                        '      </div>' +
+                        '    </div>' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">用户姓名：</label>' +
+                        '      <div class="layui-input-inline">' +
+                        '        <input type="text" id="realname" name="realname" lay-verify="email" autocomplete="off" class="layui-input">' +
+                        '      </div>' +
+                        '    </div>' +
+                        '  </div>' +
+                        ' <div class="layui-form-item">' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">用户性别：</label>' +
+                        '       <div class="layui-input-inline">' +
+                        '<select id="sex" name="sex">' +
+                        '<option value="0" selected="">女</option>' +
+                        '<option value="1">男</option>' +
+                        '</select>' +
+                        '</div>' +
+                        '    </div>' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">联系电话：</label>' +
+                        '      <div class="layui-input-inline">' +
+                        '        <input type="text" id="phone" name="phone" lay-verify="email" autocomplete="off" class="layui-input">' +
+                        '      </div>' +
+                        '    </div>' +
+                        '  </div>' +
+                        ' <div class="layui-form-item">' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">所属角色：</label>' +
+                        '       <div class="layui-input-inline">' +
+                        '<select id="rolename" name="rolename" lay-filter="rolename" class="layui-input">' +
+                        {volist name="roleList" id="vo"}
+                        '<option value="{$vo.id}">{$vo.name}</option>' +
+                        {/volist}
+                        '</select>' +
+                        '</div>' +
+                        '    </div>' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">登录密码：</label>' +
+                        '      <div class="layui-input-inline">' +
+                        '        <input type="text" id="pwd" name="pwd" lay-verify="email" autocomplete="off" class="layui-input">' +
+                        '      </div>' +
+                        '    </div>' +
+                        '  </div>' +
+                        '</form>',
+                        success: function (layero, index) {
+                            var btn = layero.find('.layui-layer-btn0');
+                            form.render();
+                        },
+                        yes: function (index, layero) {
+                            // console.log(index)
+                            // layer.close(index); //如果设定了yes回调，需进行手工关闭
+                            var values = {
+                                ID: $("#id").val(),
+                                NAME: $("#name").val(),
+                                REALNAME: $("#realname").val(),
+                                SEX: $("#sex").val(),
+                                PHONE: $("#phone").val(),
+                                PWD: $("#pwd").val(),
+                                ROLE_ID: $("#rolename").val()
+                            };
+                            $.ajax({
+                                "type": "post",
+                                "url": '{:url("/Admin/saveChange")}',
+                                "dataType": "json",
+                                "data": {
+                                    type: 'add',
+                                    values: values,
+                                }, // 以json格式传递
+                                "success": function (resp) {
+                                    layer.msg('保存成功', {time: 1000, icon: 6});
+                                    table.reload('demo');
+                                    layer.close(index);
+                                }
+                            })
+                        },
+                        cancel: function () {
+                            layer.msg('已经关闭', {time: 1000, icon: 6});
+                        }
+                    })
+
+                    break;
+                case 'update':
+            if(data.length === 0){
+                layer.msg('请选择一行');
+            } else if(data.length > 1){
+                layer.msg('只能同时编辑一个');
+            } else {
+                    var index = layer.open({
+                        type: 1,
+                        title: '添加数据',
+                        id: 'myp',
+                        btn: ['确认', '关闭'],
+                        area: ['660px'], //宽高
+                        content: '<form class="layui-form" lay-filter="formTest">' +
+                        '  <div class="layui-form-item">' +
+                        '    <label class="layui-form-label">ID：</label>' +
+                        '    <div class="layui-input-block" style="width: 78%;">' +
+                        '      <input type="text" id="id" disabled name="id" lay-verify="title" autocomplete="off" placeholder="自动生成" class="layui-input">' +
+                        '    </div>' +
+                        '  </div>' +
+                        '  <div class="layui-form-item">' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">用户账号：</label>' +
+                        '      <div class="layui-input-inline">' +
+                        '        <input type="tel" id="name" name="name" lay-verify="required|phone" autocomplete="off" class="layui-input">' +
+                        '      </div>' +
+                        '    </div>' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">用户姓名：</label>' +
+                        '      <div class="layui-input-inline">' +
+                        '        <input type="text" id="realname" name="realname" lay-verify="email" autocomplete="off" class="layui-input">' +
+                        '      </div>' +
+                        '    </div>' +
+                        '  </div>' +
+                        ' <div class="layui-form-item">' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">用户性别：</label>' +
+                        '       <div class="layui-input-inline">' +
+                        '<select id="sex" name="sex">' +
+                        '<option value="0" selected="">女</option>' +
+                        '<option value="1">男</option>' +
+                        '</select>' +
+                        '</div>' +
+                        '    </div>' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">联系电话：</label>' +
+                        '      <div class="layui-input-inline">' +
+                        '        <input type="text" id="phone" name="phone" lay-verify="email" autocomplete="off" class="layui-input">' +
+                        '      </div>' +
+                        '    </div>' +
+                        '  </div>' +
+                        ' <div class="layui-form-item">' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">所属角色：</label>' +
+                        '       <div class="layui-input-inline">' +
+                        '<select id="rolename" name="rolename" lay-filter="rolename" class="layui-input">' +
+                        {volist name="roleList" id="vo"}
+                        '<option value="{$vo.id}">{$vo.name}</option>' +
+                        {/volist}
+                        '</select>' +
+                        '</div>' +
+                        '    </div>' +
+                        '    <div class="layui-inline">' +
+                        '      <label class="layui-form-label">登录密码：</label>' +
+                        '      <div class="layui-input-inline">' +
+                        '        <input type="text" id="pwd" name="pwd" lay-verify="email" autocomplete="off" class="layui-input">' +
+                        '      </div>' +
+                        '    </div>' +
+                        '  </div>' +
+                        '</form>',
+                        success: function (layero, index) {
+                            form.render();
+                            form.val("formTest", {
+                                "id": checkStatus.data[0].id
+                                ,"name": checkStatus.data[0].name
+                                ,"realname": checkStatus.data[0].realname
+                                ,"sex": checkStatus.data[0].sex
+                                ,"phone": checkStatus.data[0].phone
+                                ,"pwd": checkStatus.data[0].pwd
+                                ,"rolename": checkStatus.data[0].role_id
+                            })
+                        },
+                        yes: function (index, layero) {
+                            // console.log(index)
+                            // layer.close(index); //如果设定了yes回调，需进行手工关闭
+                            var values = {
+                                ID: $("#id").val(),
+                                NAME: $("#name").val(),
+                                REALNAME: $("#realname").val(),
+                                SEX: $("#sex").val(),
+                                PHONE: $("#phone").val(),
+                                PWD: $("#pwd").val(),
+                                ROLE_ID: $("#rolename").val()
+                            };
+                            $.ajax({
+                                "type": "post",
+                                "url":'{:url("/Admin/saveChange")}',
+                                "dataType": "json",
+                                "data": {
+                                    type:'update',
+                                    values: values,
+                                }, // 以json格式传递
+                                "success": function (resp) {
+                                    layer.msg('保存成功', {time: 1000, icon: 6});
+                                    table.reload('demo');
+                                    layer.close(index);
+                                }
+                            })
+                        }
+                    })
+            }
+                    break;
+                case 'delete':
+                    if (data.length === 0) {
+                        layer.msg('请选择一行');
+                    } else {
+                        var index = layer.open({
+                            type: 1,
+                            title: '删除数据',
+                            id: 'myp1',
+                            btn: ['确认', '关闭'],
+                            area: ['250px'], //宽高
+                            content: '<div style="padding:15px;">确认删除？</div>',
+                            success: function (layero, index) {
+                            form.render();
+                        },
+                        yes: function (index, layero) {
+                            $.ajax({
+                                "type": "post",
+                                "url": '{:url("/Admin/saveChange")}',
+                                "dataType": "json",
+                                "data": {
+                                    type: 'del',
+                                    id: checkStatus.data[0].id,
+                                }, // 以json格式传递
+                                "success": function (resp) {
+                                    layer.msg('保存成功', {time: 1000, icon: 6});
+                                    table.reload('demo');
+                                    layer.close(index);
+                                }
+                            })
+                        }
+                    })
+                    }
+                    break;
+            }
+            ;
+        });
+
+    });
+
+</script>

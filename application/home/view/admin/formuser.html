@@ -1,0 +1,93 @@
+{extend name="template/base" /}
+{block name="title"}bitms-用户管理{/block}
+{block name="other_css"}
+{/block}
+{block name="body"}
+<div class="layui-layout layui-layout-admin">
+    <!-- body -->
+    <div class="layui-body no-footer">
+        <!-- 内容主体区域 -->
+        <div class="layui-fluid">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">ID：</label>
+                    <div class="layui-input-block" style="width: 78%;">
+                        <input type="text" id="id" disabled name="id" lay-verify="title" autocomplete="off"
+                               placeholder="请输入ID" value="{$userinfo.id}" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户账号：</label>
+                        <div class="layui-input-inline">
+                            <input type="tel" id="name" name="name" lay-verify="required|phone" autocomplete="off"
+                                   class="layui-input" value="{$userinfo.name|default=''}">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户姓名：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="realname" name="realname" lay-verify="email" autocomplete="off"
+                                   class="layui-input" value="{$userinfo.realname|default=''}">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户性别：</label>
+                        <div class="layui-input-inline">
+                            <select id="sex" name="sex">
+                                {if isset($userinfo.sex) AND $userinfo.sex==1}
+                                <option value="0">女</option>
+                                <option value="1" selected>男</option>
+                                {else}
+                                <option value="0" selected>女</option>
+                                <option value="1">男</option>
+                                {/if}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">联系电话：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="phone" name="phone" lay-verify="email" autocomplete="off"
+                                   class="layui-input" value="{$userinfo.realname|default=''}">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">所属角色：</label>
+                        <div class="layui-input-inline">
+                            <select id="rolename" name="rolename" lay-filter="rolename" class="layui-input">
+                                {volist name="roleList" id="vo"}
+                                {if }
+                                <option value="{$vo.id}">{$vo.name}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">登录密码：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="pwd" name="pwd" lay-verify="email" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            ,
+        </div>
+    </div>
+</div>
+{/block}
+{block name="other_js"}
+<script src="__DIST__/js/my.js" type="text/javascript" charset="UTF-8"></script>
+<!-- other js -->
+<script type="text/javascript">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'form'], function () {
+        var element = layui.element;
+    });
+</script>
+{/block}

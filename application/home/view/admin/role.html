@@ -1,0 +1,64 @@
+{extend name="template/base" /}
+{block name="title"}bifms-主页{/block}
+{block name="other_css"}
+<link rel="stylesheet" href="__VENDOR__/layui/css/modules/eleTree/eleTree.css" type="text/css">
+{/block}
+{block name="body"}
+<div class="layui-layout layui-layout-admin">
+    {include file="template/header" /}
+    {include file="template/side" /}
+    <!-- body -->
+    <div class="layui-body no-footer">
+        <!-- 内容主体区域 -->
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            表格测试
+                        </div>
+                        <div class="layui-card-body">
+                            <table id="demo" lay-filter="test"></table>
+                        </div>
+                    </div>
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            树测试
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="eleTree ele1" lay-filter="data2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="other_js"}
+<!-- other js -->
+<script type="text/javascript">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'jquery', 'table'], function () {
+        var element = layui.element;
+        var table = layui.table;
+        var eleTree = layui.eleTree;
+        //第一个实例
+        table.render({
+            elem: '#demo',
+            //height: 312,
+            method: 'post',
+            url: '{:url("/index/test")}', //数据接口
+            page: {
+                limit: 10,
+                layout: ['prev', 'page', 'next', 'count']
+            },//开启分页
+            cols: [[ //表头
+                {field: 'ID', title: 'ID', width: 60, sort: true, unresize: true},
+                {field: 'PID', title: 'PID', width: 60, unresize: true},
+                {field: 'NAME', title: 'NAME', width: 120, sort: true, unresize: true},
+                {field: 'URL', title: 'URL', unresize: true}
+            ]]
+        })
+</script>
+{/block}

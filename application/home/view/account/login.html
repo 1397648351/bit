@@ -1,0 +1,140 @@
+{extend name="template:base" /}
+{block name="title"}bitms-登录{/block}
+{block name="other_css"}
+<link rel='stylesheet' href='__DIST__/css/login.css' type="text/css"/>
+{/block}
+{block name="body"}
+<div class="layui-layout layui-layout-admin">
+    {include file="template/header" /}
+    <!-- body -->
+    <div class="layui-body no-side">
+        <div class="login-content">
+            <div class="layui-row">
+                <div class="layui-col-lg8 layui-col-md7 layui-col-sm6 layui-hide-xs">
+                    <div class="layui-row">
+                        <div class="layui-col-sm12 layui-col-md12">
+                            <div class="login-introduction">
+                                <h2 class="login-introduction-title">智慧消防</h2>
+                                <div class="login-introduction-content">
+                                    该平台综合运用物联网、云计算、大数据、移动互联网等新兴信息技术，实现信息化与消防业务的深度融合，构建统一的城市消防远程监控预警平台，全面提升消防安全信息共享和协调管理水平。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-lg4 layui-col-md5 layui-col-sm6 layui-col-xs12">
+                    <form class="layui-form login-form" action="{:url('account/login')}" method="post"
+                          lay-filter="form_login">
+                        <div class="layui-card">
+                            <div class="layui-card-header layui-bg-gray"><i class="layui-icon layui-icon-user"></i>&nbsp;&nbsp;登录
+                            </div>
+                            <div class="layui-card-body">
+                                <div class="layui-form-item">
+                                    <input type="text" id="name" name="name" lay-filter="name" required
+                                           lay-verify="required" value="{$user.username}"
+                                           placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-item">
+                                    <input type="password" id="password" value="{$user.password}" name="password" required lay-verify="required"
+                                           placeholder="请输入密码" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="code" name="code" required
+                                               lay-verify="required|verifyCode"
+                                               placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <img id="img_verify" class="img_verify" src="{:url('/Account/verify')}"
+                                         alt="验证码" title="看不清？点击换一张">
+                                </div>
+                                <div class="layui-form-item">
+                                    {if $user.remember}
+                                    <input type="checkbox" checked name="remember" title="记住我" lay-skin="primary">
+                                    {else /}
+                                    <input type="checkbox" name="remember" title="记住我" lay-skin="primary">
+                                    {/if}
+                                </div>
+                            </div>
+                            <div class="layui-card-footer layui-bg-gray">
+                                <button class="layui-btn layui-btn-normal btn-login" lay-submit lay-filter="btn_Login">
+                                    登录
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-footer no-side">南京苏瑞科技实业有限公司 当前版本：v0.6.0.0517</div>
+</div>
+{/block}
+{block name="other_js"}
+<!-- other js -->
+<script type="text/javascript">
+    $(function(){
+        //注意：导航 依赖 element 模块，否则无法进行功能性操作
+        layui.use(['element', 'jquery', 'form', 'layer'], function () {
+            var element = layui.element;
+            var $ = layui.jquery;
+            var form = layui.form;
+            var layer = layui.layer;
+            $("#img_verify").on('click', function () {
+                var url = "{:url('/Account/verify')}";
+                $(this).attr('src', url + '?time=' + new Date().getTime());
+            });
+
+            // form.val("form_login", {
+            //     "name": "admin", // "name": "value"
+            //     "password": "njbosa",
+            // });
+
+            form.verify({
+                verifyCode: function (value, item) {
+                    var msg;
+                    $.ajax({
+                        type: "POST",
+                        url: "{:url('/account/verify')}",
+                        async: false, // 使用同步的方法
+                        data: {
+                            code: value
+                        },
+                        dataType: 'json',
+                        success: function (data, status) {
+                            if (!data) {
+                                msg = '验证码错误';
+                                $("#img_verify").click();
+                            }
+                        }
+                    });
+                    return msg;
+                }
+            });
+
+            form.on('submit(btn_Login)', function (data) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{:url('/account/login')}",
+                    dataType: 'json',
+                    data: data.field,
+                    success: function (resp, status, jqXHR) {
+                        if (resp.status_code != 200) {
+                            layer.msg('内部错误！', {icon: 5, anim: 6});
+                            return;
+                        }
+                        if (resp.data) {
+                            document.location.href = "{:url('/index/index')}";
+                        } else {
+                            layer.msg(resp.msg, {icon: 5, anim: 6});
+                           $('#password').val('');
+                            $('#code').val('');
+                            $("#img_verify").click();
+                        }
+                    }
+                });
+                return false;
+            })
+        });
+    });
+</script>
+{/block}

@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="__VENDOR__/layui/css/modules/dtree/dtree.css" type="text/css">
+<link rel="stylesheet" href="__VENDOR__/layui/css/modules/dtree/font/iconfont.css" type="text/css">
+<div class="layui-row">
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                表格测试
+            </div>
+            <div class="layui-card-body">
+                <table id="demo" lay-filter="test"></table>
+            </div>
+        </div>
+        <div class="layui-card">
+            <div class="layui-card-header">
+                树测试
+            </div>
+            <div class="layui-card-body">
+                <ul id="demoTree" class="dtree" data-id="0"></ul>
+                <button id="btn-test">测试</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- other js -->
+<script type="text/javascript">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'table', 'dtree'], function () {
+        var element = layui.element;
+        var table = layui.table;
+        var dtree = layui.dtree;
+        //第一个实例
+        table.render({
+            elem: '#demo',
+            //height: 312,
+            method: 'POST',
+            url: '{:url("/index/tableData")}', //数据接口
+            page: {
+                limit: 10,
+                layout: ['prev', 'page', 'next', 'count']
+            },//开启分页
+            cols: [[ //表头
+                {field: 'ID', title: 'ID', width: 60, sort: true, unresize: true},
+                {field: 'PID', title: 'PID', width: 60, unresize: true},
+                {field: 'NAME', title: 'NAME', width: 120, sort: true, unresize: true},
+                {field: 'URL', title: 'URL', unresize: true}
+            ]]
+        });
+        var data2 = [{
+            "id": "001",
+            "title": "数据源表",
+            "isLast": false,
+            "level": "1",
+            "parentId": "-1",
+            "basicData": {"data1": "1", "data2": "2"},
+            "checkArr": [{"type": "0", "isChecked": "0"}],
+            "children": [{
+                "id": "001001",
+                "title": "公共信息类",
+                "isLast": false,
+                "level": "2",
+                "parentId": "001",
+                "basicData": {"data1": "1", "data2": "2"},
+                "checkArr": [{"type": "0", "isChecked": "0"}],
+                "children": [{
+                    "id": "001001001",
+                    "title": "总账科目查询",
+                    "isLast": true,
+                    "parentId": "001001",
+                    "iconClass": "icon-shuye1",
+                    "basicData": {"data1": "1", "data2": "2"},
+                    "checkArr": [{"type": "0", "isChecked": "0"}],
+                    "level": "3"
+                }]
+            }]
+        }];
+        dtree.render({
+            elem: '#demoTree',
+            data: data2,
+            checkbar: true,
+        });
+        $("#btn-test").on('click', function () {
+            console.log(dtree.getCheckbarNodesParam("demoTree"));
+        });
+    });
+</script>
