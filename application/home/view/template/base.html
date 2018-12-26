@@ -10,7 +10,7 @@
     <meta name="keywords" content=''>
     <meta name="description" content="">
     <meta name="author" content="wu">
-    <title>{block name="title"}网站标题{/block}</title>
+    <title>{*block name="title"*}网站标题{*/block*}</title>
     <!-- Set render engine for 360 browser -->
     <meta name="renderer" content="webkit">
     <link rel="shortcut icon" href="/favicon.ico"/>
@@ -20,9 +20,9 @@
     <link rel='stylesheet' href='__VENDOR__/layui/css/layui.css' type="text/css"/>
     <link rel='stylesheet' href='__DIST__/css/my.css' type="text/css"/>
     <link rel='stylesheet' href='__DIST__/css/theme.css' type="text/css"/>
-    {block name="other_css"}
+    {*block name="other_css"*}
     <!-- other css -->
-    {/block}
+    {*/block*}
     <!--[if (gte IE 9)|!(IE)]><!-->
     <script src="__VENDOR__/jQuery/jquery-3.2.1.min.js" type="text/javascript" type="text/javascript"></script>
     <!--<![endif]-->
@@ -31,14 +31,14 @@
     <![endif]-->
     <!--<script src="__VENDOR__/bootstrap/js/bootstrap.min.js" type="text/javascript" type="text/javascript"></script>-->
     <script src="__VENDOR__/layui/layui.js" type="text/javascript"></script>
-    {block name="other_jsfile"}
+    {*block name="other_jsfile"*}
     <!-- other js -->
-    {/block}
+    {*/block*}
 </head>
 <body class="layui-layout-body theme-default" data-themealias="default">
-{block name="body"}content{/block}
-{block name="other_js"}
+{*block name="body"*}content{*/block*}
+{*block name="other_js"*}
 <!-- other js -->
-{/block}
+{*/block*}
 </body>
 </html>

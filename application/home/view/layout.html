@@ -1,14 +1,14 @@
-{extend name="template/base" /}
-{block name="title"}bitms-主页{/block}
-{block name="other_css"}
-{/block}
-{block name="other_jsfile"}
+{*extend name="template/base" /*}
+{*block name="title"*}bitms-主页{*/block*}
+{*block name="other_css"*}
+{*/block*}
+{*block name="other_jsfile"*}
 <script src="__VENDOR__/jQuery/jquery.pjax.js" type="text/javascript" type="text/javascript"></script>
-{/block}
-{block name="body"}
+{*/block*}
+{*block name="body"*}
 <div class="layui-layout layui-layout-admin">
-    {include file="template/header" /}
-    {include file="template/side" /}
+    {*include file="template/header" /*}
+    {*include file="template/side" /*}
     <!-- body -->
     <div class="layui-body no-footer">
         <div class="layui-progress page-loading-progress" id='page_progress' lay-filter="page-progress">
@@ -17,13 +17,13 @@
         <!-- 内容主体区域 -->
         <div class="layui-fluid">
             <div id="pjax-container">
-                {__CONTENT__}
+                {*__CONTENT__*}
             </div>
         </div>
     </div>
 </div>
-{/block}
-{block name="other_js"}
+{*/block*}
+{*block name="other_js"*}
 <!-- other js -->
 <script src="__DIST__/js/my.js" type="text/javascript" charset="UTF-8"></script>
-{/block}
+{*/block*}

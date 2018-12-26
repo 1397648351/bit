@@ -1,11 +1,11 @@
-{extend name="template:base" /}
-{block name="title"}bitms-登录{/block}
-{block name="other_css"}
+{*extend name="template:base" /*}
+{*block name="title"*}bitms-登录{*/block*}
+{*block name="other_css"*}
 <link rel='stylesheet' href='__DIST__/css/login.css' type="text/css"/>
-{/block}
-{block name="body"}
+{*/block*}
+{*block name="body"*}
 <div class="layui-layout layui-layout-admin">
-    {include file="template/header" /}
+    {*include file="template/header" /*}
     <!-- body -->
     <div class="layui-body no-side">
         <div class="login-content">
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="layui-col-lg4 layui-col-md5 layui-col-sm6 layui-col-xs12">
-                    <form class="layui-form login-form" action="{:url('account/login')}" method="post"
+                    <form class="layui-form login-form" action="{*:url('account/login')*}" method="post"
                           lay-filter="form_login">
                         <div class="layui-card">
                             <div class="layui-card-header layui-bg-gray"><i class="layui-icon layui-icon-user"></i>&nbsp;&nbsp;登录
@@ -31,11 +31,11 @@
                             <div class="layui-card-body">
                                 <div class="layui-form-item">
                                     <input type="text" id="name" name="name" lay-filter="name" required
-                                           lay-verify="required" value="{$user.username}"
+                                           lay-verify="required" value="{*$user.username*}"
                                            placeholder="请输入用户名" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-form-item">
-                                    <input type="password" id="password" value="{$user.password}" name="password" required lay-verify="required"
+                                    <input type="password" id="password" value="{*$user.password*}" name="password" required lay-verify="required"
                                            placeholder="请输入密码" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-form-item">
@@ -44,15 +44,15 @@
                                                lay-verify="required|verifyCode"
                                                placeholder="请输入验证码" autocomplete="off" class="layui-input">
                                     </div>
-                                    <img id="img_verify" class="img_verify" src="{:url('/Account/verify')}"
+                                    <img id="img_verify" class="img_verify" src="{*:url('/Account/verify')*}"
                                          alt="验证码" title="看不清？点击换一张">
                                 </div>
                                 <div class="layui-form-item">
-                                    {if $user.remember}
+                                    {*if $user.remember*}
                                     <input type="checkbox" checked name="remember" title="记住我" lay-skin="primary">
-                                    {else /}
+                                    {*else /*}
                                     <input type="checkbox" name="remember" title="记住我" lay-skin="primary">
-                                    {/if}
+                                    {*/if*}
                                 </div>
                             </div>
                             <div class="layui-card-footer layui-bg-gray">
@@ -68,8 +68,8 @@
     </div>
     <div class="layui-footer no-side">南京苏瑞科技实业有限公司 当前版本：v0.6.0.0517</div>
 </div>
-{/block}
-{block name="other_js"}
+{*/block*}
+{*block name="other_js"*}
 <!-- other js -->
 <script type="text/javascript">
     $(function(){
@@ -80,7 +80,7 @@
             var form = layui.form;
             var layer = layui.layer;
             $("#img_verify").on('click', function () {
-                var url = "{:url('/Account/verify')}";
+                var url = "{*:url('/Account/verify')*}";
                 $(this).attr('src', url + '?time=' + new Date().getTime());
             });
 
@@ -94,7 +94,7 @@
                     var msg;
                     $.ajax({
                         type: "POST",
-                        url: "{:url('/account/verify')}",
+                        url: "{*:url('/account/verify')*}",
                         async: false, // 使用同步的方法
                         data: {
                             code: value
@@ -123,7 +123,7 @@
                             return;
                         }
                         if (resp.data) {
-                            document.location.href = "{:url('/index/index')}";
+                            document.location.href = "{*:url('/index/index')*}";
                         } else {
                             layer.msg(resp.msg, {icon: 5, anim: 6});
                            $('#password').val('');

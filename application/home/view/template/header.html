@@ -3,17 +3,17 @@
     <div class="layui-logo" style="width: auto">
         <img src="__DIST__/images/logo_web.png" height="32" style="margin-top: -5px">智慧消防远程监控平台
     </div>
-    {if session('?user')}
+    {*if session('?user')*}
     <ul class="layui-nav">
         <li class="layui-nav-item">
-            <a href="javascript:;"><i class="layui-icon layui-icon-friends"></i>&nbsp;{:session('user')}</a>
+            <a href="javascript:;"><i class="layui-icon layui-icon-friends"></i>&nbsp;{*:session('user')*}</a>
             <dl class="layui-nav-child">
                 <!--<dd><a href="javascript:;">修改信息</a></dd>
                 <dd><a href="javascript:;">安全管理</a></dd>-->
-                <dd><a href="{:url('/account/logout')}"><i class="layui-icon layui-icon-return"></i>&nbsp;退出</a></dd>
+                <dd><a href="{*:url('/account/logout')*}"><i class="layui-icon layui-icon-return"></i>&nbsp;退出</a></dd>
             </dl>
         </li>
     </ul>
-    {//else /}
-    {/if}
+    {*//else /*}
+    {*/if*}
 </div>
