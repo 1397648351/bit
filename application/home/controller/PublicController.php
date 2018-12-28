@@ -16,24 +16,24 @@ class PublicController extends BaseController
     {
         $str = '';
         foreach ($data as $v) {
-            if ($v['PID'] == $id) {
-                if ($v['LEAF'] == 0) {
-                    if ($v['PID'] == -1) {
-                        if (!empty($curitem) && $curitem == strtolower($v['URL'])){
-                            $str .= '<li class="layui-nav-item layui-this"><a data-pjax href="' . $v['URL'] . '">' . $v['NAME'] . '</a></li>';
+            if ($v['pid'] == $id) {
+                if ($v['leaf'] == 1) {
+                    if ($v['pid'] == -1) {
+                        if (!empty($curitem) && $curitem == strtolower($v['url'])){
+                            $str .= '<li class="layui-nav-item layui-this"><a data-pjax href="' . $v['url'] . '">' . $v['name'] . '</a></li>';
                         }
                         else
-                            $str .= '<li class="layui-nav-item"><a data-pjax href="' . $v['URL'] . '">' . $v['NAME'] . '</a></li>';
+                            $str .= '<li class="layui-nav-item"><a data-pjax href="' . $v['url'] . '">' . $v['name'] . '</a></li>';
                     } else {
-                        if (!empty($curitem) && $curitem == strtolower($v['URL'])){
-                            $str .= '<li class="layui-this"><a data-pjax href="' . $v['URL'] . '">' . $v['NAME'] . '</a></li>';
+                        if (!empty($curitem) && $curitem == strtolower($v['url'])){
+                            $str .= '<li class="layui-this"><a data-pjax href="' . $v['url'] . '">' . $v['name'] . '</a></li>';
                         }
                         else
-                            $str .= '<li><a data-pjax href="' . $v['URL'] . '">' . $v['NAME'] . '</a></li>';
+                            $str .= '<li><a data-pjax href="' . $v['url'] . '">' . $v['name'] . '</a></li>';
                     }
                 } else {
-                    $children = $this->recursion($data, $curitem, $v['ID']);
-                    $str .= '<li class="layui-nav-item"><a href="javascript:;">' . $v['NAME'] . '</a><ul class="layui-nav-child">' . $children . '</ul></li>';
+                    $children = $this->recursion($data, $curitem, $v['id']);
+                    $str .= '<li class="layui-nav-item"><a href="javascript:;">' . $v['name'] . '</a><ul class="layui-nav-child">' . $children . '</ul></li>';
                 }
             }
         }

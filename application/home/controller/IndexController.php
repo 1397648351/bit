@@ -12,11 +12,11 @@ class IndexController extends PublicController
 {
     public function index()
     {
-        $this->getMenu();
-        //session('user', 'wuze');
+        session('user', 'wuze');
         if (!$this->isLogin()) {
             $this->redirect(url('/account/login'));
         } else {
+            $this->getMenu();
             $this->show();
         }
     }
