@@ -10,6 +10,8 @@ namespace app\common\controller;
 
 use page\Page;
 use think\Controller;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class BaseController extends Controller
 {
@@ -71,8 +73,8 @@ class BaseController extends Controller
 
     /**
      * json返回
-     * @param $data 数据
-     * @param int $status 状态码
+     * @param array $data 数据
+     * @param int $status_code 状态码
      * @param int $msg 描述
      * @author LiuTao liut1@kexinbao100.com
      */
@@ -107,5 +109,60 @@ class BaseController extends Controller
                 //. chr(125);
             return $uuid;
         }
+    }
+
+    /**
+     * 下载文件时设置headers
+     * @param string $contentType 文件类型
+     * @param string $filename 文件名称
+     * @author WUZE
+     */
+    public function downloadHeaders($contentType, $filename)
+    {
+        header('Content-Type: ' . $contentType);
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+    }
+
+    /**
+     * 生成Excel表格
+     * @param array $filed 键值对
+     * @param string $fileName 文件名称
+     * @param string $sheetName sheet名称
+     * @param array $data
+     * @return Xlsx
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    public function downloadExcel($filed, $fileName = 'newExcel', $sheetName = 'sheet1', $data = array())
+    {
+        // 输出Excel表格到浏览器下载
+        $this->downloadHeaders('application/vnd.ms-excel', $fileName);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle($sheetName);
+        $keys = array_keys($filed);
+        for ($i = 0; $i < sizeof($keys); $i++) {
+            if (!is_array($filed[$keys[$i]]))
+                $sheet->setCellValueByColumnAndRow($i + 1, 1, $filed[$keys[$i]]);
+            else {
+                $sheet->setCellValueByColumnAndRow($i + 1, 1, $filed[$keys[$i]]['title']);
+                $sheet->getColumnDimensionByColumn($i + 1)->setWidth($filed[$keys[$i]]['width']);
+            }
+        }
+        for ($i = 0; $i < sizeof($data); $i++) {
+            for ($j = 0; $j < sizeof($keys); $j++) {
+                $sheet->setCellValueByColumnAndRow($j + 1, $i + 2, $data[$i][$keys[$j]]);
+            }
+        }
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
+        //return $writer;
     }
 }
