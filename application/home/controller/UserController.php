@@ -11,7 +11,7 @@ namespace app\home\controller;
 use think\captcha\Captcha;
 
 
-class AccountController extends PublicController
+class UserController extends PublicController
 {
     public function verify()
     {
@@ -80,6 +80,11 @@ class AccountController extends PublicController
     public function logout()
     {
         session(null);
-        $this->redirect(url('/account/login'));
+        $this->redirect(url('/user/login'));
+    }
+
+    public function index(){
+        $this->getMenu();
+        $this->show();
     }
 }

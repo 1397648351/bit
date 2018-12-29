@@ -14,7 +14,7 @@ class IndexController extends PublicController
     {
         session('user', 'wuze');
         if (!$this->isLogin()) {
-            $this->redirect(url('/account/login'));
+            $this->redirect(url('/user/login'));
         } else {
             $this->getMenu();
             $this->show();
