@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="layui-col-lg4 layui-col-md5 layui-col-sm6 layui-col-xs12">
-                    <form class="layui-form login-form" action="{*:url('account/login')*}" method="post"
+                    <form class="layui-form login-form" action="{*:url('user/login')*}" method="post"
                           lay-filter="form_login">
                         <div class="layui-card">
                             <div class="layui-card-header layui-bg-gray"><i class="layui-icon layui-icon-user"></i>&nbsp;&nbsp;登录
@@ -44,7 +44,7 @@
                                                lay-verify="required|verifyCode"
                                                placeholder="请输入验证码" autocomplete="off" class="layui-input">
                                     </div>
-                                    <img id="img_verify" class="img_verify" src="{*:url('/Account/verify')*}"
+                                    <img id="img_verify" class="img_verify" src="{*:url('user/verify')*}"
                                          alt="验证码" title="看不清？点击换一张">
                                 </div>
                                 <div class="layui-form-item">
@@ -74,13 +74,12 @@
 <script type="text/javascript">
     $(function(){
         //注意：导航 依赖 element 模块，否则无法进行功能性操作
-        layui.use(['element', 'jquery', 'form', 'layer'], function () {
+        layui.use(['element', 'form', 'layer'], function () {
             var element = layui.element;
-            var $ = layui.jquery;
             var form = layui.form;
             var layer = layui.layer;
             $("#img_verify").on('click', function () {
-                var url = "{*:url('/Account/verify')*}";
+                var url = "{*:url('user/verify')*}";
                 $(this).attr('src', url + '?time=' + new Date().getTime());
             });
 
@@ -94,7 +93,7 @@
                     var msg;
                     $.ajax({
                         type: "POST",
-                        url: "{*:url('/account/verify')*}",
+                        url: "{*:url('/user/verify')*}",
                         async: false, // 使用同步的方法
                         data: {
                             code: value
@@ -114,7 +113,7 @@
             form.on('submit(btn_Login)', function (data) {
                 $.ajax({
                     type: 'POST',
-                    url: "{:url('/account/login')}",
+                    url: "{:url('/user/login')}",
                     dataType: 'json',
                     data: data.field,
                     success: function (resp, status, jqXHR) {
@@ -123,7 +122,7 @@
                             return;
                         }
                         if (resp.data) {
-                            document.location.href = "{*:url('/index/index')*}";
+                            document.location.href = "{*:url('index/index')*}";
                         } else {
                             layer.msg(resp.msg, {icon: 5, anim: 6});
                            $('#password').val('');
@@ -137,4 +136,4 @@
         });
     });
 </script>
-{/block}
+{*/block*}

@@ -15,7 +15,7 @@
 
 //Route::get('hello/:name', 'index/hello');
 
-Route::get('verify','user/verify');
+//Route::get('verify','User/verify');
 
 return [
 
