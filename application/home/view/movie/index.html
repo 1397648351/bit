@@ -1,0 +1,65 @@
+<link rel="stylesheet" href="__VENDOR__/layui/css/modules/dtree/font/iconfont.css" type="text/css">
+<div class="layui-row">
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                表格测试
+            </div>
+            <div class="layui-card-body">
+                <table id="movie" lay-filter="movie"></table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- other js -->
+<script type="text/javascript">
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element', 'table'], function () {
+        var element = layui.element;
+        var table = layui.table;
+        //第一个实例
+        table.render({
+            elem: '#movie',
+            //height: 312,
+            method: 'POST',
+            url: '{*:url("movie/tableData")*}', //数据接口
+            page: {
+                limit: 15,
+                layout: ['prev', 'page', 'next', 'count']
+            },//开启分页
+            cols: [[ //表头
+                {field: 'id', title: 'ID', width: 80, align: 'center', unresize: true},
+                {field: 'name', title: '名称', width: 150, unresize: true},
+                {field: 'date', title: '日期', width: 120, align: 'center', unresize: true},
+                {field: 'score', title: '分数', width: 70, align: 'center', sort: true, unresize: true},
+                {field: 'introduction', title: '介绍', minWidth: 350, unresize: true},
+                {
+                    field: 'url', title: '原地址', width: 80, unresize: true, align: 'center',
+                    templet: function (d) {
+                        return '<a href="' + d.url + '" target="_blank"><i class="layui-icon layui-icon-website" style="font-size: 20px; color: #1E9FFF;"></i></a>'
+                    }
+                },
+                {field: 'download', title: '下载地址', minWidth: 350, unresize: true},
+            ]],
+            // skin: 'row', //行边框风格
+            // even: true, //开启隔行背景
+            // size: 'sm' //小尺寸的表格
+        });
+        //监听排序事件
+        table.on('sort(movie)', function (obj) { //注：tool是工具条事件名，movie是table原始容器的属性 lay-filter="对应的值"
+            // console.log(obj.field); //当前排序的字段名
+            // console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+            // console.log(this); //当前排序的 th 对象
+
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+            table.reload('movie', {
+                initSort: obj,//记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field, //排序字段
+                    order: obj.type //排序方式
+                }
+            });
+        });
+    });
+</script>

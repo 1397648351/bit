@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80011
+ Source Server Version : 80013
  Source Host           : localhost:3306
  Source Schema         : base
 
  Target Server Type    : MySQL
- Target Server Version : 80011
+ Target Server Version : 80013
  File Encoding         : 65001
 
- Date: 06/01/2019 17:12:24
+ Date: 07/01/2019 10:45:12
 */
 
 SET NAMES utf8mb4;
@@ -35,8 +35,10 @@ CREATE TABLE `bs_menu`  (
 -- ----------------------------
 INSERT INTO `bs_menu` VALUES (1, -1, '主页', '/Index/index', 1);
 INSERT INTO `bs_menu` VALUES (2, -1, '系统管理', '/#', 0);
+INSERT INTO `bs_menu` VALUES (3, -1, '功能', '/#', 0);
 INSERT INTO `bs_menu` VALUES (210, 2, '用户管理', '/User/index', 1);
 INSERT INTO `bs_menu` VALUES (220, 2, '菜单管理', '/Menu/index', 1);
+INSERT INTO `bs_menu` VALUES (310, 3, '电影', '/Movie/index', 1);
 
 -- ----------------------------
 -- Table structure for bs_movie
