@@ -28,6 +28,7 @@
 </head>
 <body class="layui-layout-body theme-default" data-themealias="default">
 <canvas id="c"></canvas>
+<script src="__DIST__/js/extend.js" type="text/javascript"></script>
 <script src="__DIST__/js/heart.js" type="text/javascript"></script>
 <script>
     var b = document.body;
@@ -40,12 +41,8 @@
     canvas.setAttribute("height", height);
     var ctx = document.getElementById("c").getContext("2d");
 
-    var heart1 = new Heart(ctx, width / 2, height / 2, 5);
-    heart1.draw(Math.PI / 180 * 30);
-    var heart2 = new Heart(ctx, width / 2, height / 3, 5);
-    heart2.draw(0);
-    var heart = new Heart(ctx, width / 4, height / 2, 5);
-    heart.draw(Math.PI / 180 * 10);
+    var heart = new Heart(ctx, width / 2, height / 2, 16, 300);
+    heart.draw(0);
     // end of submission //
 </script>
 </body>
