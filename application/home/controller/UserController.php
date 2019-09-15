@@ -22,9 +22,9 @@ class UserController extends PublicController
                 // 验证码位数
                 'length' => 4,
                 // 是否添加杂点
-                'useNoise' => false,
+                'useNoise' => true,
                 // 是否画混淆曲线
-                'useCurve' => true,
+                'useCurve' => false,
                 'imageH' => 36,
                 'imageW' => 97,
                 //'bg' => [255, 255, 255],
@@ -52,7 +52,7 @@ class UserController extends PublicController
                 $user = cookie('user');
             }
             $this->assign('user', $user);
-            $this->view->engine->layout(false);
+            //$this->view->engine->layout(false);
             return $this->fetch();
         } else {
             $data = array();
@@ -72,7 +72,10 @@ class UserController extends PublicController
                 session('user', $data['username']);
             }
             session('user', $data['username']);
-            $this->resJson($user_exist['success'], 200, $user_exist['msg']);
+            return json([
+                'data' => $user_exist['success'],
+                'msg'  => $user_exist['msg']
+            ]);
             //$this->redirect(url('/index/index'));
         }
     }

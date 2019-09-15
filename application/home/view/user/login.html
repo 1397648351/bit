@@ -95,11 +95,12 @@
                 console.log(1);
                 $.ajax({
                     type: 'POST',
-                    url: "{:url('/user/login')}",
+                    url: "{*:url('/user/login')*}",
                     dataType: 'json',
                     data: data.field,
                     success: function (resp, status, jqXHR) {
-                        if (resp.status_code != 200) {
+                        console.log(resp);
+                        if (jqXHR.status != 200) {
                             layer.msg('内部错误！', {icon: 5, anim: 6});
                             return;
                         }

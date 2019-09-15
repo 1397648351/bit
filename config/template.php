@@ -41,7 +41,7 @@ return [
         '__JS__' => '/static/dist/js',
         '__IMAGES__' => '/static/dist/images',
     ],
-    'layout_on'     =>  true,
+    'layout_on'     =>  false,
     'layout_name'   =>  'layout',
     'layout_item'   =>  '{*__CONTENT__*}'
 ];

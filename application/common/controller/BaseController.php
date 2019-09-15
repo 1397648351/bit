@@ -72,23 +72,6 @@ class BaseController extends Controller
     }
 
     /**
-     * json返回
-     * @param array $data 数据
-     * @param int $status_code 状态码
-     * @param int $msg 描述
-     * @author LiuTao liut1@kexinbao100.com
-     */
-    public function resJson($data = array(), $status_code = 1001, $msg = 0)
-    {
-        header('Content-Type:application/json; charset=utf-8');
-        $res['data'] = $data;
-        $res['status_code'] = $status_code;
-        $res['msg'] = $msg;
-        $str = json_encode($res, JSON_UNESCAPED_UNICODE);
-        exit($str);
-    }
-
-    /**
      * 生成GUID
      */
     public function guid()

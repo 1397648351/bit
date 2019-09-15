@@ -12,5 +12,10 @@ use think\Model;
 
 class Base extends Model
 {
-
+    public function getTableData($page, $limit, $filed = null, $order = 'ASC')
+    {
+        $res['data'] = $this->order($filed, $order)->limit(($page - 1) * $limit, $limit)->select();
+        $res['count'] = $this->count();
+        return $res;
+    }
 }

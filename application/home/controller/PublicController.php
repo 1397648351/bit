@@ -19,16 +19,14 @@ class PublicController extends BaseController
             if ($v['pid'] == $id) {
                 if ($v['leaf'] == 1) {
                     if ($v['pid'] == -1) {
-                        if (!empty($curitem) && $curitem == strtolower($v['url'])){
+                        if (!empty($curitem) && $curitem == strtolower($v['url'])) {
                             $str .= '<li class="layui-nav-item layui-this"><a data-pjax href="' . $v['url'] . '">' . $v['name'] . '</a></li>';
-                        }
-                        else
+                        } else
                             $str .= '<li class="layui-nav-item"><a data-pjax href="' . $v['url'] . '">' . $v['name'] . '</a></li>';
                     } else {
-                        if (!empty($curitem) && $curitem == strtolower($v['url'])){
+                        if (!empty($curitem) && $curitem == strtolower($v['url'])) {
                             $str .= '<li class="layui-this"><a data-pjax href="' . $v['url'] . '">' . $v['name'] . '</a></li>';
-                        }
-                        else
+                        } else
                             $str .= '<li><a data-pjax href="' . $v['url'] . '">' . $v['name'] . '</a></li>';
                     }
                 } else {
@@ -68,11 +66,12 @@ class PublicController extends BaseController
 
     public function show($template = '')
     {
+        $this->view->engine->layout(true);
         if ($this->request->isPjax()) {
             // 临时关闭当前模板的布局功能
             $this->view->config('tpl_cache', false);
             $this->view->engine->layout(false);
         }
-        exit($this->fetch($template));
+        exit($this->fetch($template)->getContent());
     }
 }

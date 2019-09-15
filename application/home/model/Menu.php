@@ -14,11 +14,4 @@ class Menu extends Base
     {
         return $this->order(['pid', 'id'])->select();
     }
-
-    public function getTableData($page, $limit)
-    {
-        $res['data'] = $this->limit(($page - 1) * $limit, $limit)->select();
-        $res['count'] = $this->count();
-        return $res;
-    }
 }
