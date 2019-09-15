@@ -99,9 +99,9 @@
                     dataType: 'json',
                     data: data.field,
                     success: function (resp, status, jqXHR) {
-                        console.log(resp);
                         if (jqXHR.status != 200) {
                             layer.msg('内部错误！', {icon: 5, anim: 6});
+                            $("#img_verify").click();
                             return;
                         }
                         if (resp.data) {

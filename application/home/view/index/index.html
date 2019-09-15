@@ -8,15 +8,6 @@
                 <table id="demo" lay-filter="test"></table>
             </div>
         </div>
-        <div class="layui-card">
-            <div class="layui-card-header">
-                树测试
-            </div>
-            <div class="layui-card-body">
-                <ul id="demoTree" class="dtree" data-id="0"></ul>
-                <button id="btn-test">测试</button>
-            </div>
-        </div>
     </div>
 </div>
 <!-- other js -->
@@ -31,7 +22,7 @@
             elem: '#demo',
             //height: 312,
             method: 'POST',
-            url: '{*:url("/index/tableData")*}', //数据接口
+            url: '{*:url("/menu/tableData")*}', //数据接口
             page: {
                 limit: 10,
                 layout: ['prev', 'page', 'next', 'count']
@@ -42,42 +33,6 @@
                 {field: 'name', title: 'NAME', width: 120, sort: true, unresize: true},
                 {field: 'url', title: 'URL', unresize: true}
             ]]
-        });
-        var data2 = [{
-            "id": "001",
-            "title": "数据源表",
-            "isLast": false,
-            "level": "1",
-            "parentId": "-1",
-            "basicData": {"data1": "1", "data2": "2"},
-            "checkArr": [{"type": "0", "isChecked": "0"}],
-            "children": [{
-                "id": "001001",
-                "title": "公共信息类",
-                "isLast": false,
-                "level": "2",
-                "parentId": "001",
-                "basicData": {"data1": "1", "data2": "2"},
-                "checkArr": [{"type": "0", "isChecked": "0"}],
-                "children": [{
-                    "id": "001001001",
-                    "title": "总账科目查询",
-                    "isLast": true,
-                    "parentId": "001001",
-                    "iconClass": "icon-shuye1",
-                    "basicData": {"data1": "1", "data2": "2"},
-                    "checkArr": [{"type": "0", "isChecked": "0"}],
-                    "level": "3"
-                }]
-            }]
-        }];
-        dtree.render({
-            elem: '#demoTree',
-            data: data2,
-            checkbar: true,
-        });
-        $("#btn-test").on('click', function () {
-            console.log(dtree.getCheckbarNodesParam("demoTree"));
         });
     });
 </script>

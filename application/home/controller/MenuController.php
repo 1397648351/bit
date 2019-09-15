@@ -21,9 +21,10 @@ class MenuController extends PublicController
     {
         $page = $this->request->param('page');
         $limit = $this->request->param('limit');
-        $menu = model('menu');
-        $data = $menu->getTableData($page, $limit);
+        $field = $this->request->param('field');
+        $order = $this->request->param('order');
+        $movieModel = model('menu');
+        $data = $movieModel->getTableData($page, $limit, $field, $order);
         $this->resTableJson($data);
     }
-
 }

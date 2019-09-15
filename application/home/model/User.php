@@ -24,14 +24,8 @@ class User extends Base
             $res['msg'] = '用户名不存在';
             return $res;
         }
-        $pwd_hash = $this->where($where)->column('PWD_HASH');
-        if(!empty($pwd_hash))
-            $pwd_hash = $pwd_hash[0];
-        else
-            $pwd_hash = "";
-        $where['PWD'] = md5($psw . '.' . $pwd_hash);
-        $user_exist = $this->where($where)->count() > 0;
-        if ($user_exist) {
+        $db_psw = $this->where($where)->column('PASSWORD');
+        if (password_verify($psw, $db_psw[0])) {
             $res['success'] = true;
             $res['msg'] = '';
         } else {
