@@ -130,7 +130,9 @@ class Url
             // 匹配路由命名标识
             $url = $match[0];
 
-            $domain = $match[1];
+            if ($domain) {
+                $domain = $match[1];
+            }
 
             if (!is_null($match[2])) {
                 $suffix = $match[2];
@@ -316,7 +318,7 @@ class Url
                     }
                 }
             }
-        } elseif (!strpos($domain, '.')) {
+        } elseif (0 !== strpos($domain, $rootDomain) && false === strpos($domain, '.')) {
             $domain .= '.' . $rootDomain;
         }
 
@@ -354,7 +356,7 @@ class Url
                 continue;
             }
 
-            if ($this->app['request']->port() != 80) {
+            if (!in_array($this->app['request']->port(), [80, 443])) {
                 $domain .= ':' . $this->app['request']->port();
             }
 
